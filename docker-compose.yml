@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+    - 27017:27017
+
+  mysql:
+    image: mysql:lates
+    environment:
+      MYSQL_PASSWORD_ROOT=
+    ports:
+      - 3306:3309
+
+  mariadb:
+    image: mariadb:latest
+    environment:
+      - MARIADB_USER_PASSWORD=
+    ports:
+    - 3306:3309
+
+my_express:
+  build:
+    context: ./servidor
+    dockerfile: Dockerfile
+  ports:
+    -5000:4500
+  environment:
+    - MONGODB_HOST
+
+    - MYSQL_HOST
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+  -MARIADB_HOST
+  -MARIADB_USER
+  -MARIADB_PASSWORD
+  volumes:
+    - ./server:/servidor
+    - /servidor/node_modules
